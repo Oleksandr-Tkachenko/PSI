@@ -20,7 +20,7 @@ int32_t benchroutine(int32_t argc, char** argv) {
 	string address = "127.0.0.1";
 	uint16_t port=7766;
 	timeval begin, end;
-	vector<CSocket> sockfd(ntasks);
+	vector<CSocket> sockfd;
 	field_type ftype = ECC_FIELD;
 	role_type role = (role_type) 0;
 	uint64_t bytes_sent=0, bytes_received=0, mbfac;
@@ -29,12 +29,12 @@ int32_t benchroutine(int32_t argc, char** argv) {
 	bool cardinality=false;
 	bool detailed_timings = false;
 
-	mbfac=1024*1024;
+	mbfac=1;
 
 	read_bench_options(&argc, &argv, &role, &nelements, &elebytelen, &symsecbits,
 			&address, &port, &ntasks, &protocol, &nclients, &epsilon, &cardinality, &ftype,
-			&detailed_timings);
-
+			&detailed_timings, &runs);
+	sockfd.resize(ntasks);
 	if(role == SERVER) {
 		if(protocol == TTP) {
 			ntasks = nclients;
@@ -58,6 +58,9 @@ int32_t benchroutine(int32_t argc, char** argv) {
 		crypto.gen_rnd(elements, elebytelen * nelements);
 	}
 
+	for(i = 0; i < sockfd.size(); i++) {
+		sockfd[i].reset_tracking();
+	}
 
 #ifdef PRINT_INPUT_ELEMENTS
 	for(i = 0; i < nelements; i++) {
@@ -101,9 +104,9 @@ int32_t benchroutine(int32_t argc, char** argv) {
 
 
 #else
-	cout << "Required time:\t" << fixed << std::setprecision(1) << getMillies(begin, end)/1000 << " s" << endl;
-	cout << "Data sent:\t" <<	((double)bytes_sent)/mbfac << " MB" << endl;
-	cout << "Data received:\t" << ((double)bytes_received)/mbfac << " MB" << endl;
+	cout << "Required time per exec:\t" << getMillies(begin, end)/runs << " ms" << endl;
+	cout << "Data sent per exec:\t" <<	(uint64_t) bytes_sent/(mbfac*runs)<< " Bytes" << endl;
+	cout << "Data received per exec:\t" << (uint64_t) bytes_received/(mbfac*runs) << " Bytes" << endl;
 #endif
 
 #ifdef PRINT_INTERSECTION
@@ -127,7 +130,7 @@ int32_t benchroutine(int32_t argc, char** argv) {
 
 int32_t read_bench_options(int32_t* argcp, char*** argvp, role_type* role, uint32_t* nelements, uint32_t* bytelen,
 		uint32_t* secparam, string* address, uint16_t* port, uint32_t* ntasks, psi_prot* protocol, uint32_t* nclients,
-		double* epsilon, bool* cardinality, field_type* ftype, bool* detailed_timings) {
+		double* epsilon, bool* cardinality, field_type* ftype, bool* detailed_timings, uint32_t* nexecs) {
 
 	uint32_t int_role=0, int_port=0, int_protocol=0;
 	bool useffc=false;
@@ -144,7 +147,8 @@ int32_t read_bench_options(int32_t* argcp, char*** argvp, role_type* role, uint3
 			{(void*) epsilon, T_DOUBLE, 'e', "Epsilon in Cuckoo hashing", false, false},
 			{(void*) cardinality, T_FLAG, 'y', "Compute cardinality (only for DH and TTP PSI)", false, false},
 			{(void*) &useffc, T_FLAG, 'f', "Use finite-field cryptography", false, false},
-			{(void*) detailed_timings, T_FLAG, 'd', "Flag: Enable Detailed Timings", false, false}
+			{(void*) detailed_timings, T_FLAG, 'd', "Flag: Enable Detailed Timings", false, false},
+			{(void*) nexecs, T_NUM, 'x', "Number of Executions, default 1", false, false}
 	};
 
 	if(!parse_options(argcp, argvp, options, sizeof(options)/sizeof(parsing_ctx))) {

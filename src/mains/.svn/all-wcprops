@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1071/Implementations/Ours/src/mains
+END
+psi_demo.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/mains/psi_demo.h
+END
+cuckoo_analysis.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1050/Implementations/Ours/src/mains/cuckoo_analysis.cpp
+END
+ot_oprf.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1094/Implementations/Ours/src/mains/ot_oprf.cpp
+END
+bench_psi.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1071/Implementations/Ours/src/mains/bench_psi.cpp
+END
+test_psi.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1060/Implementations/Ours/src/mains/test_psi.cpp
+END
+cuckoo_analysis.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/mains/cuckoo_analysis.h
+END
+ot_oprf.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1094/Implementations/Ours/src/mains/ot_oprf.h
+END
+bench_psi.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1067/Implementations/Ours/src/mains/bench_psi.h
+END
+psi_demo.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/mains/psi_demo.cpp
+END
+test_psi.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/mains/test_psi.h
+END

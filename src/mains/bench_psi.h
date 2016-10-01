@@ -32,7 +32,7 @@ void read_elements(uint8_t*** elements, uint32_t** elebytelens, uint32_t* neleme
 
 int32_t read_bench_options(int32_t* argcp, char*** argvp, role_type* role, uint32_t* nelements, uint32_t* bytelen,
 		uint32_t* secparam, string* address, uint16_t* port, uint32_t* ntasks, psi_prot* protocol, uint32_t* nclients,
-		double* epsilon, bool* cardinality, field_type* ftype, bool* detailed_timings);
+		double* epsilon, bool* cardinality, field_type* ftype, bool* detailed_timings, uint32_t* nexecs);
 
 
 #endif /* BENCH_PSI_H_ */

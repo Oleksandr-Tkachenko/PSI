@@ -11,10 +11,6 @@
 #include "hashing_util.h"
 
 
-//TEST CHANGE
-//TEST CHANGE PSI->Hashing
-//This is a test
-//This is a test from ABY to PSI and Hashing
 #define MAX_ITERATIONS 1024
 //#define DEBUG_CUCKOO
 #ifdef TEST_UTILIZATION

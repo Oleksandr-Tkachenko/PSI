@@ -76,6 +76,9 @@ cuckoo_hashing(uint8_t* elements, uint32_t neles, uint32_t nbins, uint32_t bitle
 	ctx[0].endpos = neles;
 	gen_cuckoo_entries(ctx);
 #endif
+
+	//cout << "number of bins = " << nbins << endl;
+
 	//for(i = 0; i < nbins; i++) {
 	//	cout << "Address " << i << " mapped to " << hs.address_used[i] << " times" << endl;
 	//}
@@ -105,7 +108,7 @@ cuckoo_hashing(uint8_t* elements, uint32_t neles, uint32_t nbins, uint32_t bitle
 	for(i = 0; i < nbins; i++) {
 		if(cuckoo_table[i] != NULL) {
 			memcpy(hash_table + i * hs.outbytelen, cuckoo_table[i]->val, hs.outbytelen);
-			//cout << "copying value: " << (hex) << (unsigned int) cuckoo_table[i]->val[cuckoo_table[i]->pos][0] << (dec) << endl;
+			//cout << "copying value: " << (hex) << ((uint32_t*) cuckoo_table[i]->val)[0] << (dec) << endl;
 			*perm_ptr = cuckoo_table[i]->eleid;
 			perm_ptr++;
 			nelesinbin[i] = 1;
@@ -114,7 +117,28 @@ cuckoo_hashing(uint8_t* elements, uint32_t neles, uint32_t nbins, uint32_t bitle
 			nelesinbin[i] = 0;
 		}
 	}
-
+#else
+#ifdef CHECK_CORRECTNESS
+	bool found;
+	uint32_t not_set = 0;
+	for(i = 0; i < neles; i++) {
+		found = false;
+		for(uint32_t j = 0, b; j < nbins && !found; j++) {
+			if(cuckoo_table[j] != NULL) {
+				for(b = 0; b < hs.inbytelen; b++) {
+					if(*(elements + i * hs.inbytelen + b) == cuckoo_table[j]->val[b]) {
+						break;
+					}
+				}
+				if(b == hs.inbytelen) {
+					found = true;
+				}
+			}
+		}
+		assert(found);
+	}
+//	cout << "Execution successful, #tables not set = " << not_set << endl;
+#endif
 #endif
 
 #ifndef TEST_UTILIZATION
@@ -165,7 +189,11 @@ inline void gen_cuckoo_entry(uint8_t* in, cuckoo_entry_ctx* out, hs_t* hs, uint3
 	out->eleid = ele_id;
 
 #ifndef TEST_UTILIZATION
-		out->val = (uint8_t*) calloc(hs->outbytelen, sizeof(uint8_t));
+	out->val = (uint8_t*) calloc(hs->outbytelen, sizeof(uint8_t));
+#else
+#ifdef CHECK_CORRECTNESS
+	out->val = (uint8_t*) calloc(hs->inbytelen, sizeof(uint8_t));
+#endif
 #endif
 	hashElement(in, out->address, out->val, hs);
 }
@@ -218,8 +246,8 @@ inline bool insert_element(cuckoo_entry_ctx** ctable, cuckoo_entry_ctx* element,
 #endif
 		evicted = tmp_evicted;
 
-		//change position - if the number of HF's is increased beyond 2 this should be replaced by a different strategy
-		evicted->pos = (evicted->pos+1) % NUM_HASH_FUNCTIONS;
+		//change position
+		evicted->pos = (evicted->pos+rand()) % NUM_HASH_FUNCTIONS;
 	}
 
 	//the highest number of iterations has been reached

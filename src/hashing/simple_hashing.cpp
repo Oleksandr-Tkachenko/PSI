@@ -7,7 +7,12 @@
 
 #include "simple_hashing.h"
 
-uint8_t* simple_hashing(uint8_t* elements, uint32_t neles, uint32_t bitlen, uint32_t *outbitlen, uint32_t* nelesinbin, uint32_t nbins,
+#ifndef TEST_UTILIZATION
+uint8_t*
+#else
+uint32_t
+#endif
+simple_hashing(uint8_t* elements, uint32_t neles, uint32_t bitlen, uint32_t *outbitlen, uint32_t* nelesinbin, uint32_t nbins,
 		uint32_t ntasks, prf_state_ctx* prf_state) {
 	sht_ctx* table;
 	//uint8_t** bin_content;
@@ -65,9 +70,9 @@ uint8_t* simple_hashing(uint8_t* elements, uint32_t neles, uint32_t bitlen, uint
 	//bin_content = (uint8_t**) malloc(sizeof(uint8_t*) * nbins);
 	//*nelesinbin = (uint32_t*) malloc(sizeof(uint32_t) * nbins);
 
+#ifndef TEST_UTILIZATION
 	res_bins = (uint8_t*) malloc(neles * NUM_HASH_FUNCTIONS * hs.outbytelen);
 	bin_ptr = res_bins;
-
 
 	for(i = 0; i < hs.nbins; i++) {
 		nelesinbin[i] = 0;
@@ -80,6 +85,16 @@ uint8_t* simple_hashing(uint8_t* elements, uint32_t neles, uint32_t bitlen, uint
 		}
 		//right now only the number of elements in each bin is copied instead of the max bin size
 	}
+#else
+	uint32_t maxeles=0;
+	for(i = 0; i < hs.nbins; i++) {
+		for(j = 0; j < ntasks; j++) {
+			if((table +j)->bins[i].nvals > maxeles) {
+				maxeles = (table +j)->bins[i].nvals;
+			}
+		}
+	}
+#endif
 
 	for(j = 0; j < ntasks; j++)
 		free_hash_table(table + j);
@@ -92,8 +107,11 @@ uint8_t* simple_hashing(uint8_t* elements, uint32_t neles, uint32_t bitlen, uint
 	//free(locks);
 
 	free_hashing_state(&hs);
-
+#ifndef TEST_UTILIZATION
 	return res_bins;
+#else
+	return maxeles;
+#endif
 }
 
 void *gen_entries(void *ctx_tmp) {

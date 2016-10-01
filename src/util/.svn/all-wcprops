@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1071/Implementations/Ours/src/util
+END
+parse_options.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/parse_options.cpp
+END
+typedefs.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1065/Implementations/Ours/src/util/typedefs.h
+END
+codewords.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/codewords.cpp
+END
+ecc.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/ecc.cpp
+END
+parse_options.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/parse_options.h
+END
+bch.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/bch.cpp
+END
+socket.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1071/Implementations/Ours/src/util/socket.h
+END
+codewords.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/codewords.h
+END
+ecc.h
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/ecc.h
+END
+connection.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/connection.cpp
+END
+bch.h
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/bch.h
+END
+cbitvector.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/cbitvector.cpp
+END
+connection.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/connection.h
+END
+helpers.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1094/Implementations/Ours/src/util/helpers.h
+END
+cbitvector.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/cbitvector.h
+END
+intrin_sequential_enc8.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/intrin_sequential_enc8.cpp
+END
+thread.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/thread.h
+END
+intrin_sequential_enc8.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/ec-spride-ecp-set-intersection/!svn/ver/1038/Implementations/Ours/src/util/intrin_sequential_enc8.h
+END

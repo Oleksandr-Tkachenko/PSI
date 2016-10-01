@@ -14,8 +14,10 @@
 typedef uint16_t TABLEID_T;
 
 //#define TEST_UTILIZATION
-#ifdef TEST_UTILIZATIN
-#define NUM_HASH_FUNCTIONS 2
+#ifdef TEST_UTILIZATION
+#define NUM_HASH_FUNCTIONS 3
+#define COUNT_FAILS
+//#define CHECK_CORRECTNESS
 #else
 #define NUM_HASH_FUNCTIONS 3
 #endif
@@ -36,7 +38,7 @@ typedef struct hashing_state_ctx {
 	uint32_t addrbitlen;
 	uint32_t floor_addrbitlen;
 	uint32_t outbitlen;
-	//the byte values, are stored separately since they are needed very often
+	//the byte values, are stored separately since they are needed often
 	uint32_t inbytelen;
 	uint32_t addrbytelen;
 	uint32_t outbytelen;
@@ -64,6 +66,10 @@ static const uint32_t SELECT_BITS_INV[33] = \
 									 0x00000000 };
 
 static const uint8_t BYTE_SELECT_BITS_INV[8] = {0xFF, 0x7F, 0x3F, 0x1F, 0x0F, 0x07, 0x03, 0x01};
+
+#ifdef TEST_UTILIZATION
+static uint32_t GLOBAL_HASH_VAL[NUM_HASH_FUNCTIONS][262144] = {0};
+#endif
 
 //Init the values for the hash function
 static void init_hashing_state(hs_t* hs, uint32_t nelements, uint32_t inbitlen, uint32_t nbins,
@@ -104,13 +110,23 @@ static void init_hashing_state(hs_t* hs, uint32_t nelements, uint32_t inbitlen, 
 		hs->hf_values[i] = (uint32_t**) malloc(sizeof(uint32_t*) * hs->nhfvals);
 
 		for(j = 0; j < hs->nhfvals; j++) {
+#ifdef TEST_UTILIZATION
+			hs->hf_values[i][j] = GLOBAL_HASH_VAL[i];
+#else
 			hs->hf_values[i][j] = (uint32_t*) malloc(nrndbytes);
+#endif
+
+
 			assert(hs->hf_values[i][j]);
+#ifdef AES256_HASH
+			gen_rnd_bytes_pipelined(prf_state, (uint8_t*) hs->hf_values[i][j], nrndbytes);
+#else
 			gen_rnd_bytes(prf_state, (uint8_t*) hs->hf_values[i][j], nrndbytes);
+#endif
 		}
 	}
 	//cout << "nhfvals = " << hs->nhfvals << endl;
-	hs->address_used = (uint32_t*) calloc(nbins, sizeof(uint32_t));
+	//hs->address_used = (uint32_t*) calloc(nbins, sizeof(uint32_t));
 	hs->mask = 0xFFFFFFFF;
 	if(hs->inbytelen < sizeof(uint32_t)) {
 		hs->mask >>= (sizeof(uint32_t) * 8 - hs->inbitlen - hs->addrbitlen);
@@ -120,12 +136,15 @@ static void init_hashing_state(hs_t* hs, uint32_t nelements, uint32_t inbitlen, 
 static void free_hashing_state(hs_t* hs) {
 	uint32_t i, j;
 	for(i = 0; i < NUM_HASH_FUNCTIONS; i++) {
+#ifndef TEST_UTILIZATION
 		for(j = 0; j  < hs->nhfvals; j++) {
 			free(hs->hf_values[i][j]);
 		}
+#endif
 		free(hs->hf_values[i]);
 	}
-	free(hs->address_used);
+
+	//free(hs->address_used);
 	//free(hs->hf_values);
 }
 
@@ -206,6 +225,10 @@ inline void hashElement(uint8_t* element, uint32_t* address, uint8_t* val, hs_t*
 	}
 
 
+#else
+#ifdef CHECK_CORRECTNESS
+	memcpy(val, element, hs->inbytelen);
+#endif
 #endif
 	//cout << "Address for hfid = " << hfid << ": " << *address << ", L = " << L << ", R = " << R << endl;
 

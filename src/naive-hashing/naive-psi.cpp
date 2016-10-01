@@ -16,8 +16,9 @@ uint32_t naivepsi(role_type role, uint32_t neles, uint32_t pneles, uint32_t* ele
 	uint32_t* matches = (uint32_t*) malloc(sizeof(uint32_t) * min(neles, pneles));
 
 	uint32_t intersect_size = naivepsi(role, neles, pneles, ectx, crypt_env, sock, ntasks, matches);
-
-	create_result_from_matches_var_bitlen(result, resbytelens, elebytelens, elements, matches, intersect_size);
+	if(role == CLIENT) {
+		create_result_from_matches_var_bitlen(result, resbytelens, elebytelens, elements, matches, intersect_size);
+	}
 
 	free(matches);
 
@@ -36,7 +37,9 @@ uint32_t naivepsi(role_type role, uint32_t neles, uint32_t pneles, uint32_t eleb
 
 	uint32_t intersect_size = naivepsi(role, neles, pneles, ectx, crypt_env, sock, ntasks, matches);
 
-	create_result_from_matches_fixed_bitlen(result, elebytelen, elements, matches, intersect_size);
+	if(role == CLIENT) {
+		create_result_from_matches_fixed_bitlen(result, elebytelen, elements, matches, intersect_size);
+	}
 
 	free(matches);
 
@@ -46,7 +49,8 @@ uint32_t naivepsi(role_type role, uint32_t neles, uint32_t pneles, uint32_t eleb
 uint32_t naivepsi(role_type role, uint32_t neles, uint32_t pneles, task_ctx ectx,
 		crypto* crypt_env, CSocket* sock, uint32_t ntasks, uint32_t* matches) {
 
-	uint32_t i, intersect_size, maskbytelen;
+	uint32_t i, intersect_size;
+	uint64_t sndbufsize, rcvbufsize, maskbytelen;
 	//task_ctx_naive ectx;
 	CSocket* tmpsock = sock;
 
@@ -77,13 +81,24 @@ uint32_t naivepsi(role_type role, uint32_t neles, uint32_t pneles, task_ctx ectx
 
 	run_task(ntasks, ectx, hash);
 
-	phashes = (uint8_t*) malloc(sizeof(uint8_t) * pneles * maskbytelen);
-
+	if(role == CLIENT) {
+		phashes = (uint8_t*) malloc(sizeof(uint8_t) * pneles * maskbytelen);
+	}
 
 #ifdef DEBUG
 	cout << "Exchanging hashes" << endl;
 #endif
-	snd_and_rcv(hashes, neles * maskbytelen, phashes, pneles * maskbytelen, tmpsock);
+
+	if(role == SERVER) {
+		sndbufsize = neles * maskbytelen;
+		rcvbufsize = 0;
+	} else {
+		sndbufsize = 0;
+		rcvbufsize = neles * maskbytelen;
+	}
+
+
+	snd_and_rcv(hashes, sndbufsize, phashes, rcvbufsize, tmpsock);
 
 	/*cout << "Hashes of my elements: " << endl;
 	for(i = 0; i < neles; i++) {
@@ -103,8 +118,10 @@ uint32_t naivepsi(role_type role, uint32_t neles, uint32_t pneles, task_ctx ectx
 #ifdef DEBUG
 	cout << "Finding intersection" << endl;
 #endif
-	intersect_size = find_intersection(hashes, neles, phashes, pneles, maskbytelen,
-			perm, matches);
+	if(role == CLIENT) {
+		intersect_size = find_intersection(hashes, neles, phashes, pneles, maskbytelen,
+				perm, matches);
+	}
 
 
 #ifdef DEBUG
@@ -113,7 +130,9 @@ uint32_t naivepsi(role_type role, uint32_t neles, uint32_t pneles, task_ctx ectx
 	free(perm);
 	free(hashes);
 	//free(permeles);
-	free(phashes);
+	if(role == CLIENT) {
+		free(phashes);
+	}
 
 	return intersect_size;
 }

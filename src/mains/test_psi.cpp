@@ -53,8 +53,6 @@ uint32_t test_psi_prot(role_type role, CSocket* sock, uint32_t nelements,
 			pnelements, nclients = 2;
 	uint8_t *elements, *pelements, *p_intersection, *n_intersection, *ot_intersection, *dh_intersection;
 
-	//if(protocol != TTP)
-
 	pnelements = set_up_parameters(role, nelements, &elebytelen, &elements, &pelements, sock[0], crypt);
 
 	if(role == CLIENT) cout << " for |A|=" << nelements << ", |B|=" << pnelements << ", b=" << elebytelen << ": " << std::flush;
