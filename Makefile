@@ -79,7 +79,7 @@ test: core
 	${CC} -o test.exe ${SRC}/mains/test_psi.cpp ${OBJECTS_DHPSI} ${OBJECTS_OTPSI} ${OBJECTS_NAIVE} ${OBJECTS_SERVERAIDED} ${OBJECTS_UTIL} ${OBJECTS_HASHING} ${OBJECTS_CRYPTO} ${OBJECTS_OT} ${OBJECTS_MIRACL} ${CFLAGS} ${DEBUG_OPTIONS} ${LIBRARIES} ${MIRACL_LIB} ${INCLUDE} ${COMPILER_OPTIONS} 
 	./test.exe -r 0 -t 10 & 
 	./test.exe -r 1 -t 10
-
+	
 
 cuckoo:  
 	${CC} -o cuckoo.exe ${SRC}/mains/cuckoo_analysis.cpp ${OBJECTS_UTIL} ${OBJECTS_HASHING} ${OBJECTS_CRYPTO} ${OBJECTS_MIRACL} ${CFLAGS} ${DEBUG_OPTIONS} ${LIBRARIES} ${MIRACL_LIB} ${INCLUDE} ${COMPILER_OPTIONS}
@@ -100,3 +100,6 @@ clean:
 # this will clean everything: example objects, test object and binaries and the Miracl library
 cleanall: clean
 	rm -f ${OBJECTS_MIRACL} ${MIRACL_LIB_DIR}/*.a
+
+install: bench
+	cp psi.exe /usr/bin/psi-ot

@@ -58,16 +58,30 @@ uint32_t otpsi(role_type role, uint32_t neles, uint32_t pneles, uint32_t* elebyt
 		uint8_t*** result, uint32_t** res_bytelen, crypto* crypt_env, CSocket* sock,  uint32_t ntasks, double epsilon=1.2,
 		bool detailed_timings=false);
 
+uint32_t otpsi(role_type role, string* input_path, string* output_path, uint32_t neles, uint32_t pneles,
+                uint32_t elebitlen, uint8_t* elements, uint8_t** result, crypto* crypt_env, CSocket* sock,
+                uint32_t ntasks, double epsilon=1.2, bool detailed_timings=false);
 
 uint32_t otpsi_client(uint8_t* elements, uint32_t neles, uint32_t nbins, uint32_t pneles, uint32_t elebitlen, uint32_t maskbitlen,
+		crypto* crypt_env, CSocket* sock, uint32_t ntasks, prf_state_ctx* prf_state, uint32_t** result);
+
+uint32_t otpsi_client(uint8_t* elements, string* path_input, string* path_output, uint32_t neles, uint32_t nbins, uint32_t pneles, uint32_t elebitlen, uint32_t maskbitlen,
 		crypto* crypt_env, CSocket* sock, uint32_t ntasks, prf_state_ctx* prf_state, uint32_t** result);
 
 void otpsi_server(uint8_t* elements, uint32_t neles, uint32_t nbins, uint32_t pneles, uint32_t elebitlen, uint32_t maskbitlen,
 		crypto* crypt_env, CSocket* sock, uint32_t ntasks, prf_state_ctx* prf_state);
 
+void otpsi_server(uint8_t* elements, string* path_input, string* path_output, uint32_t neles, uint32_t nbins, uint32_t pneles, uint32_t elebitlen, uint32_t maskbitlen,
+		crypto* crypt_env, CSocket* sock, uint32_t ntasks, prf_state_ctx* prf_state);
+
 void oprg_client(uint8_t* hash_table, uint32_t nbins, uint32_t neles, uint32_t* nelesinbin, uint32_t elebitlen,
 		uint32_t maskbitlen, crypto* crypt, CSocket* sock, uint32_t nthreads, uint8_t* res_buf);
+void oprg_client(uint8_t* hash_table, string* path_input, string* path_output, uint32_t nbins, uint32_t neles, uint32_t* nelesinbin, uint32_t elebitlen,
+		uint32_t maskbitlen, crypto* crypt, CSocket* sock, uint32_t nthreads, uint8_t* res_buf);
+
 void oprg_server(uint8_t* hash_table, uint32_t nbins, uint32_t totaleles, uint32_t* nelesinbin, uint32_t elebitlen,
+		uint32_t maskbitlen, crypto* crypt, CSocket* sock, uint32_t nthreads, uint8_t* res_buf);
+void oprg_server(uint8_t* hash_table, string* path_input, string* path_output, uint32_t nbins, uint32_t totaleles, uint32_t* nelesinbin, uint32_t elebitlen,
 		uint32_t maskbitlen, crypto* crypt, CSocket* sock, uint32_t nthreads, uint8_t* res_buf);
 
 void send_masks(uint8_t* masks, uint32_t nmasks, uint32_t maskbytelen, CSocket& sock);
